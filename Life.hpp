@@ -13,7 +13,6 @@ public:
 	}
 	void update(Map *map) {
 		Map *sourcemap = new Map(*map);
-		map->fill(false);
 
 		for(int z = 0; z < sourcemap->getDepth(); z++) {
 		for(int y = 0; y < sourcemap->getHeight(); y++) {
@@ -55,13 +54,9 @@ public:
 			neighbours += sourcemap->getLife(xm, y , z);
 			neighbours += sourcemap->getLife(xm, ym, z);
 
-			if (sourcemap->getLife(x, y, z) == true) {
-				if (rules::willStayAlive(neighbours)) map->setLife(x, y, z, true);
-				else map->setLife(x, y, z, false);
-			} else {
-				if (rules::willReincarnate(neighbours)) map->setLife(x, y, z, true);
-				else map->setLife(x, y, z, false);
-			}
+			if (sourcemap->getLife(x, y, z) == true)
+			     map->setLife(x, y, z, (rules::willStayAlive(neighbours)));
+			else map->setLife(x, y, z, (rules::willReincarnate(neighbours)));
 		}
 		}
 		}
