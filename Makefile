@@ -12,7 +12,7 @@ LD = g++
 WINDRES = windres
 
 INC = 
-CFLAGS = -Wall `sdl-config --cflags`
+CFLAGS = -Wall -std=c++11 `sdl-config --cflags`
 RESINC = 
 LIBDIR = 
 LIB = -lGL -lGLU
