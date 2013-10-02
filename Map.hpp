@@ -75,8 +75,7 @@ public:
 			std::vector<std::vector<Cell> > tmpz;
 			for(int y = 0; y < height; y++) {
 				std::vector<Cell> tmpy;
-				for(int x = 0; x < width;  x++)
-					tmpy.push_back(Cell(false));
+				for(int x = 0; x < width;  x++) tmpy.push_back(Cell(false));
 				tmpz.push_back(tmpy);
 			}
 			map.push_back(tmpz);
@@ -91,6 +90,12 @@ public:
 				for(int x = 0; x < this->width;  x++)
 					this->map[z][y][x].set(rand() % 2);
 	}
+	void fill(bool life) {
+		for(int z = 0; z < this->depth;  z++)
+			for(int y = 0; y < this->height; y++)
+				for(int x = 0; x < this->width;  x++)
+					this->map[z][y][x].set(life);
+	}
 	void draw() {
 
 		float s = 0.5f;
@@ -99,13 +104,11 @@ public:
 		int h = this->height;
 		int d = this->depth;
 
-		for(int z = 0; z < d;  z++) {
+		glColor3f(1,1,1);
+		for(int z = 0; z < d; z++) {
 		for(int y = 0; y < h; y++) {
-		for(int x = 0; x < w;  x++) {
+		for(int x = 0; x < w; x++) {
 			if (this->getLife(x, y, z)) {
-				glColor3f(	1-z/d,
-							1-y/h,
-							1-x/w);
 				drawCube(x*r,y*r,z*r, s);
 			} else {
 			}
@@ -118,16 +121,16 @@ public:
 
 		glColor3f(1.0, 1.0, 1.0);
 		glBegin(GL_LINES);
-			glVertex3f(0, 0, 0); glVertex3f(0, 0, d);
-			glVertex3f(0, h, 0); glVertex3f(0, h, d);
-			glVertex3f(w, 0, 0); glVertex3f(w, 0, d);
-			glVertex3f(w, h, 0); glVertex3f(w, h, d);
+			glVertex3f(-r, -r, -r); glVertex3f(-r, -r, d);
+			glVertex3f(-r,  h, -r); glVertex3f(-r,  h, d);
+			glVertex3f( w, -r, -r); glVertex3f( w, -r, d);
+			glVertex3f( w,  h, -r); glVertex3f( w,  h, d);
 		glEnd();
 		glBegin(GL_LINE_LOOP);
-			glVertex3f(0, h, 0); glVertex3f(0, 0, 0); glVertex3f(w, 0, 0); glVertex3f(w, h, 0);
+			glVertex3f(-r, h, -r); glVertex3f(-r, -r, -r); glVertex3f(w, -r, -r); glVertex3f(w, h, -r);
 		glEnd();
 		glBegin(GL_LINE_LOOP);
-			glVertex3f(0, h, d); glVertex3f(0, 0, d); glVertex3f(w, 0, d); glVertex3f(w, h, d);
+			glVertex3f(-r, h, d); glVertex3f(-r, -r, d); glVertex3f(w, -r, d); glVertex3f(w, h, d);
 		glEnd();
 
 	}

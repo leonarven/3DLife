@@ -13,6 +13,7 @@ public:
 	}
 	void update(Map *map) {
 		Map *sourcemap = new Map(*map);
+		map->fill(false);
 
 		for(int z = 0; z < sourcemap->getDepth(); z++) {
 		for(int y = 0; y < sourcemap->getHeight(); y++) {

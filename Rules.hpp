@@ -2,7 +2,7 @@
 #define RULES_HPP
 
 namespace rules {
-	bool loopMap = true;
+	bool loopMap = false;
 
 	bool willReincarnate(int n) {
 //		if (n == 3) return true;
@@ -11,8 +11,8 @@ namespace rules {
 	}
 	// Joss on elossa
 	bool willStayAlive(int n) {
-//		if (n >= 2 && n <= 3) return true;
-		if (n >= 7 && n <= 12) return true;
+//		if ( n >= 2 && n <= 3 ) return true;
+		if ( n >= 7 && n <= 12 ) return true;
 		else return false;
 	}
 	bool willDie(int n) {

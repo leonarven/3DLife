@@ -11,3 +11,10 @@
 *.lai
 *.la
 *.a
+
+obj/*
+bin/*
+
+3Dlife.cbp
+3Dlife.layout
+3Dlife.depend

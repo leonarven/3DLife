@@ -5,7 +5,6 @@
 #include <GL/glu.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>
-#include <SDL_ttf.h>
 
 #include "Game.hpp"
 
@@ -25,11 +24,6 @@ bool init() {
 		printf( "Unable to init SDL: %s\n", SDL_GetError() );
 		return true;
 	} else printf( "Initializing SDL\n");
-
-	if ( TTF_Init() < 0 ) {
-		printf( "Unable to init SDL_ttf: %s\n", SDL_GetError() );
-		return true;
-	} else printf( "Initializing SDL_ttf\n");
 
     atexit(SDL_Quit);
 
@@ -105,13 +99,6 @@ int main ( int argc, char** argv ) {
 	}
 
 	game = new Game(32, 32, 32);
-	printf("DEBUG:%s:%d\n", __FILE__, __LINE__);
-
-
-TTF_Font *fntCourier = TTF_OpenFont( "DejaVuSerif.ttf", 12 );
-SDL_Color clrFg = {0,0,255,0};  // Blue ("Fg" is foreground)
-SDL_Rect rcDest = {0,0,0,0};
-SDL_Surface *sText = TTF_RenderText_Solid( fntCourier, "Courier 12", clrFg );
 
     while (running) {
 		events();
@@ -119,9 +106,7 @@ SDL_Surface *sText = TTF_RenderText_Solid( fntCourier, "Courier 12", clrFg );
 		game->update();
 		game->draw();
 
-		SDL_BlitSurface( sText,NULL, screen,&rcDest );
 		SDL_GL_SwapBuffers();
-//        SDL_Flip(screen);
     }
 
     printf("Exited cleanly\n");
