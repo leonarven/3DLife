@@ -9,38 +9,18 @@ using namespace std;
 
 void drawCube(double x, double y, double z, double s) {
 	glBegin( GL_QUADS );
-		glVertex3f(x-s,y-s,z-s);
-		glVertex3f(x+s,y-s,z-s);
-		glVertex3f(x+s,y+s,z-s);
-		glVertex3f(x-s,y+s,z-s);
+		glVertex3f(x-s,y-s,z-s); glVertex3f(x+s,y-s,z-s); glVertex3f(x+s,y+s,z-s); glVertex3f(x-s,y+s,z-s);
 
-		glVertex3f(x-s,y-s,z-s);
-		glVertex3f(x-s,y-s,z+s);
-		glVertex3f(x-s,y+s,z+s);
-		glVertex3f(x-s,y+s,z-s);
+		glVertex3f(x-s,y-s,z-s); glVertex3f(x-s,y-s,z+s); glVertex3f(x-s,y+s,z+s); glVertex3f(x-s,y+s,z-s);
 
-		glVertex3f(x+s,y-s,z+s);
-		glVertex3f(x+s,y-s,z-s);
-		glVertex3f(x+s,y+s,z-s);
-		glVertex3f(x+s,y+s,z+s);
+		glVertex3f(x+s,y-s,z+s); glVertex3f(x+s,y-s,z-s); glVertex3f(x+s,y+s,z-s); glVertex3f(x+s,y+s,z+s);
 
-		glVertex3f(x-s,y-s,z-s);
-		glVertex3f(x+s,y-s,z-s);
-		glVertex3f(x+s,y-s,z+s);
-		glVertex3f(x-s,y-s,z+s);
+		glVertex3f(x-s,y-s,z-s); glVertex3f(x+s,y-s,z-s); glVertex3f(x+s,y-s,z+s); glVertex3f(x-s,y-s,z+s);
 
-		glVertex3f(x-s,y-s,z+s);
-		glVertex3f(x+s,y-s,z+s);
-		glVertex3f(x+s,y+s,z+s);
-		glVertex3f(x-s,y+s,z+s);
+		glVertex3f(x-s,y-s,z+s); glVertex3f(x+s,y-s,z+s); glVertex3f(x+s,y+s,z+s); glVertex3f(x-s,y+s,z+s);
 
-		glVertex3f(x-s,y+s,z+s);
-		glVertex3f(x-s,y+s,z-s);
-		glVertex3f(x+s,y+s,z-s);
-		glVertex3f(x+s,y+s,z+s);
+		glVertex3f(x-s,y+s,z+s); glVertex3f(x-s,y+s,z-s); glVertex3f(x+s,y+s,z-s); glVertex3f(x+s,y+s,z+s);
 	glEnd();
-
-
 }
 
 class Map {
@@ -49,6 +29,18 @@ private:
 	int height;
 	int depth;
 	std::vector<std::vector<std::vector<Cell> > > map;
+
+	int D(int d, int s) { // d piste, s sivu
+		if (rules::loopMap) {
+			if (d >= s) return d - s;
+			else if (d < 0) return s + d;
+			else return d;
+		} else {
+			if (d >= s) return s-1;
+			else if (d < 0) return 0;
+			else return d;
+		}
+	}
 public:
 	Map(Map *tmap) : width(tmap->getWidth()), height(tmap->getHeight()), depth(tmap->getDepth()) {
 		for(int z = 0; z < depth;  z++) {
@@ -96,10 +88,7 @@ public:
 				for(int x = 0; x < this->width;  x++)
 					this->map[z][y][x].set(life);
 	}
-	void draw() {
-
-		float s = 0.5f;
-		float r = 1.0f;
+	void draw(float s, float r, bool updating) {
 		int w = this->width;
 		int h = this->height;
 		int d = this->depth;
@@ -109,7 +98,10 @@ public:
 		for(int x = 0; x < w; x++) {
 			if (this->getLife(x, y, z)) {
 				if (this->getNeighbours(x,y,z) > 9) continue;
-				rules::pointColor(x,y,z,w,h,d, this->getNeighbours(x,y,z));
+
+				if (updating) rules::pointColor(x,y,z,w,h,d, this->getNeighbours(x,y,z));
+				else glColor3f(1.0f, 1.0f, 1.0f);
+
 				drawCube(x*r,y*r,z*r, s);
 			} else {
 			}
@@ -148,18 +140,6 @@ public:
 	int getWidth()  { return this->width;  }
 	int getHeight() { return this->height; }
 	int getDepth()  { return this->depth;  }
-
-	int D(int d, int s) { // d piste, s sivu
-		if (rules::loopMap) {
-			if (d >= s) return d - s;
-			else if (d < 0) return s + d;
-			else return d;
-		} else {
-			if (d >= s) return s-1;
-			else if (d < 0) return 0;
-			else return d;
-		}
-	}
 	int X(int x) { return this->D(x, this->width);  }
 	int Y(int y) { return this->D(y, this->height); }
 	int Z(int z) { return this->D(z, this->depth);  }
