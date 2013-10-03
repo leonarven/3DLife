@@ -4,17 +4,21 @@
 class Cell {
 private:
 	bool life;
-	float *color;
+	int neighbours;
 public:
+
 	Cell(bool life) : life(life) {}
 
 	void set(bool life)
 		{ this->life = life; }
-	int get()
+	bool get()
 		{ return this->life; }
 
-	GLfloat *getColor()
-		{ return this->color; }
+	void setNeighbours(int neighbours)
+		{ this->neighbours = neighbours; }
+	int getNeighbours()
+		{ return this->neighbours; }
+
 
 	int isLiving()
 		{ return this->get() == true; }

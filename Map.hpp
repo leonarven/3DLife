@@ -99,16 +99,17 @@ public:
 	void draw() {
 
 		float s = 0.5f;
-		float r = 2.0f;
+		float r = 1.0f;
 		int w = this->width;
 		int h = this->height;
 		int d = this->depth;
 
-		glColor3f(1,1,1);
 		for(int z = 0; z < d; z++) {
 		for(int y = 0; y < h; y++) {
 		for(int x = 0; x < w; x++) {
 			if (this->getLife(x, y, z)) {
+				if (this->getNeighbours(x,y,z) > 9) continue;
+				rules::pointColor(x,y,z,w,h,d, this->getNeighbours(x,y,z));
 				drawCube(x*r,y*r,z*r, s);
 			} else {
 			}
@@ -138,6 +139,11 @@ public:
 		{ this->map[z][y][x].set(life); }
 	Cell get(int x, int y, int z)     { return this->map[z][y][x]; }
 	bool getLife(int x, int y, int z) { return this->get(x, y, z).get(); }
+
+	void setNeighbours(int x, int y, int z, int neighbours)
+		{ this->map[z][y][x].setNeighbours(neighbours); }
+	int getNeighbours(int x, int y, int z)
+		{ return this->map[z][y][x].getNeighbours(); }
 
 	int getWidth()  { return this->width;  }
 	int getHeight() { return this->height; }

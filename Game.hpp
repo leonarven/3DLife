@@ -32,16 +32,16 @@ public:
 
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		glLoadIdentity();
-		glTranslatef(-16, -16, -120);
+		glTranslatef(-8, -8, -80);
 
-		glRotatef(this->view.x*this->view.k, 1, 0, 0);
-		glRotatef(this->view.y*this->view.k, 0, 1, 0);
+		if (rules::followMouse) {
+			glRotatef(this->view.x*this->view.k, 1, 0, 0);
+			glRotatef(this->view.y*this->view.k, 0, 1, 0);
+		}
 
-		glTranslatef(-16, -16, -16);
+		glTranslatef(-8, -8, -16);
 
 		this->map->draw();
-
-		SDL_GL_SwapBuffers();
 	}
 	void reset() {
 		this->map->randomize();

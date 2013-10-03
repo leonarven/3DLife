@@ -57,6 +57,7 @@ public:
 			if (sourcemap->getLife(x, y, z) == true)
 			     map->setLife(x, y, z, (rules::willStayAlive(neighbours)));
 			else map->setLife(x, y, z, (rules::willReincarnate(neighbours)));
+			map->setNeighbours(x, y, z, neighbours);
 		}
 		}
 		}

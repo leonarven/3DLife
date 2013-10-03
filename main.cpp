@@ -7,6 +7,7 @@
 #include <SDL/SDL_opengl.h>
 
 #include "Game.hpp"
+#include "Rules.hpp"
 
 #define SDL_FLAGS     SDL_INIT_VIDEO
 
@@ -16,7 +17,8 @@
 #define SCREEN_FLAGS  SDL_OPENGL | SDL_GL_DOUBLEBUFFER | SDL_HWPALETTE | SDL_HWSURFACE
 
 SDL_Surface *screen;
-bool running = false;
+bool running  = false;
+bool updating = true;
 Game *game;
 
 GLenum initGL() {
@@ -62,6 +64,8 @@ bool init() {
 		return true;
 	} else printf( "Initializing screen\n");
 
+	SDL_ShowCursor( 0 );
+
 	GLenum glError = initGL();
     if( glError != GL_NO_ERROR ) {
         printf("Error initializing OpenGL! %s\n", gluErrorString(glError));
@@ -83,8 +87,24 @@ void handleEvents() {
 					case SDLK_ESCAPE:
 						running = false;
 						break;
+					case SDLK_RETURN:
+						updating = !updating;
+						break;
 					case SDLK_SPACE:
 						game->reset();
+						break;
+					case SDLK_l:
+						rules::loopMap = !rules::loopMap;
+						break;
+					default:
+						break;
+				}
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				switch(event.button.button) {
+					case SDL_BUTTON_LEFT:
+						rules::followMouse = !rules::followMouse;
+						SDL_ShowCursor( (int)(!rules::followMouse) );
 						break;
 					default:
 						break;
@@ -96,6 +116,16 @@ void handleEvents() {
 	}
 }
 
+void help() {
+	printf("----------\n");
+	printf("Näppäimet:\n");
+	printf("    esc       Sammuttaa ohjelman\n");
+	printf("    space     Alustaa kartan satunnaiseksi\n");
+	printf("    return    Pause ON/OFF\n");
+	printf("    l         Togglettaa kartan reunojen peilautuvuuden\n");
+	printf("----------\n");
+}
+
 int main ( int argc, char** argv ) {
 	if (init()) {
 		printf("Terminating..");
@@ -103,6 +133,8 @@ int main ( int argc, char** argv ) {
 	}
 
 	game = new Game(32, 32, 32);
+
+	help();
 
     while (running) {
 		handleEvents();
@@ -113,7 +145,7 @@ int main ( int argc, char** argv ) {
 		game->view.y = 2.0 * mX/(double)SCREEN_WIDTH  - 1.0;
 		game->view.x = 2.0 * mY/(double)SCREEN_HEIGHT - 1.0;
 
-		game->update();
+		if (updating) game->update();
 		game->draw();
 
 		SDL_GL_SwapBuffers();
