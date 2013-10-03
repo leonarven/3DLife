@@ -10,7 +10,14 @@ CC = gcc
 AR = ar
 WINDRES = windres
 
+<<<<<<< HEAD
 CFLAGS = -Wall `sdl-config --cflags` -std=c++11 -std=gnu++11 -O2
+=======
+INC = 
+CFLAGS = -Wall -std=c++11 `sdl-config --cflags`
+RESINC = 
+LIBDIR = 
+>>>>>>> bbe84d7ce61f3f981d4b8e62c9905d324e27d11d
 LIB = -lGL -lGLU
 LDFLAGS = `sdl-config --libs` -s
 OBJDIR= obj

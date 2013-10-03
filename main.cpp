@@ -72,6 +72,8 @@ bool init() {
         return true;
     } else printf("OpenGL initialized\n");
 
+    SDL_ShowCursor( 0 );
+
 	running = true;
 	return false;
 }
