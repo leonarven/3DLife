@@ -40,8 +40,6 @@ public:
 		glTranslatef(-16, -16, -16);
 
 		this->map->draw();
-
-		SDL_GL_SwapBuffers();
 	}
 	void reset() {
 		this->map->randomize();

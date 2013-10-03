@@ -17,6 +17,7 @@
 
 SDL_Surface *screen;
 bool running = false;
+bool follow_mouse = true;
 Game *game;
 
 GLenum initGL() {
@@ -68,6 +69,9 @@ bool init() {
         return true;
     } else printf("OpenGL initialized\n");
 
+    follow_mouse = true;
+    SDL_ShowCursor( 0 );
+
 	running = true;
 	return false;
 }
@@ -85,6 +89,16 @@ void handleEvents() {
 						break;
 					case SDLK_SPACE:
 						game->reset();
+						break;
+					default:
+						break;
+				}
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				switch(event.button.button) {
+					case SDL_BUTTON_LEFT:
+						follow_mouse = !follow_mouse;
+						SDL_ShowCursor( (int)(!follow_mouse) );
 						break;
 					default:
 						break;
@@ -110,8 +124,10 @@ int main ( int argc, char** argv ) {
 		int mX, mY;
 		SDL_GetMouseState(&mX, &mY);
 
-		game->view.y = 2.0 * mX/(double)SCREEN_WIDTH  - 1.0;
-		game->view.x = 2.0 * mY/(double)SCREEN_HEIGHT - 1.0;
+		if ( follow_mouse ) {
+			game->view.y = 2.0 * mX/(double)SCREEN_WIDTH  - 1.0;
+			game->view.x = 2.0 * mY/(double)SCREEN_HEIGHT - 1.0;
+		}
 
 		game->update();
 		game->draw();
